@@ -1,25 +1,32 @@
 import React from "react";
+import "./movies.css";
 import { connect } from "react-redux";
 import { fetchMovieDetail } from "../actions";
 
 class MovieDetail extends React.Component {
+  state = { claseActive: "favorite icon" };
   componentDidMount() {
     this.props.fetchMovieDetail("tt0372784");
   }
+  onFavoriteClick = () => {
+    if (this.state.claseActive === "favorite icon active") {
+      return this.setState({ claseActive: "favorite icon" });
+    }
+    return this.setState({ claseActive: "favorite icon active" });
+  };
   render() {
     return (
       <div className="ui grid">
         <div className="ui row">
           <div className="four wide column">
             <img
-              className="ui image"
+              className="ui Large image"
               src={this.props.movie.Poster}
               alt={this.props.movie.imdbID}
-              style={{ width: "250px", height: "280px" }}
             />
           </div>
           <div className="ten wide column">
-            <div className="content">
+            <div className="content items">
               <div className="extra">
                 <b>Título: </b> {this.props.movie.Title}
               </div>
@@ -46,6 +53,13 @@ class MovieDetail extends React.Component {
               </div>
               <div className="extra">
                 <b>Duración:</b> {this.props.movie.Runtime}
+              </div>
+              <div className="extra">
+                <b>Add to favorites: </b>
+                <i
+                  className={this.state.claseActive}
+                  onClick={this.onFavoriteClick}
+                />
               </div>
             </div>
           </div>

@@ -6,24 +6,26 @@ class Nav extends React.Component {
   state = { term: "" };
   onFormSubmit = event => {
     event.preventDefault();
-    this.props.fetchMovies(this.state.term);
+    if (this.state.term !== "") {
+      this.props.fetchMovies(this.state.term);
+    }
   };
   onInputChange = event => {
     this.setState({ term: event.target.value });
   };
   render() {
     return (
-      <div className="ui pointing menu">
+      <div className="ui inverted menu">
         <a href="/" className="item">
-          Favoritos
+          Favorites
         </a>
         <div className="right menu">
           <div className="item">
             <form onSubmit={this.onFormSubmit} className="ui form">
-              <div className="ui transparent icon input">
+              <div className="ui inverted right icon input">
                 <input
                   type="text"
-                  placeholder="Buscar Películas..."
+                  placeholder="Search Films..."
                   value={this.state.term}
                   onChange={this.onInputChange}
                 />

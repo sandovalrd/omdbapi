@@ -10,6 +10,8 @@ export const fetchMovies = titleMovie => async dispatch => {
   });
   if (response.data.Search) {
     dispatch({ type: FETCH_MOVIE, payload: response.data.Search });
+  } else {
+    alert("No se encontraron películas!");
   }
 };
 

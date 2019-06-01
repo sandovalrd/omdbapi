@@ -1,0 +1,9 @@
+.favorite.icon:hover {
+  opacity: 1;
+  color: #ffb70a;
+  cursor: pointer;
+}
+
+.active {
+  color: #ffb70a;
+}

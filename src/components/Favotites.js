@@ -21,12 +21,28 @@ class Favorites extends React.Component {
     }
   };
 
+  onDeleteFavorite = id => {
+    const list = [...this.state.list];
+    const updatedList = list.filter(item => item.id !== id);
+    this.setState({ list: updatedList });
+    localStorage.setItem("list", JSON.stringify(updatedList));
+  };
+
+  onFavoriteClick = favorite => {
+    const eliminar = window.confirm(
+      `Desea eliminar a ${favorite.title} de la lista de favoritos?`
+    );
+    if (eliminar) {
+      this.onDeleteFavorite(favorite.id);
+    }
+  };
+
   getFavorite = () => {
     const list = JSON.parse(localStorage.getItem("list"));
     return list;
   };
 
-  onRenderFavorite = list => {
+  onRenderFavorite = (list, onFavoriteClick) => {
     const renderList = list.map(favorite => {
       return (
         <div className="ui relaxed divided list" key={favorite.id}>
@@ -36,8 +52,13 @@ class Favorites extends React.Component {
                 <img src={favorite.poster} alt={favorite.id} />
               </i>
               <div className="content">
+                <i
+                  className="favorite icon active"
+                  id={favorite.id}
+                  onClick={() => onFavoriteClick(favorite)}
+                />
                 <p className="header">{favorite.title}</p>
-                <div className="description">
+                <div className="extra">
                   <p>{favorite.year}</p>
                 </div>
               </div>
@@ -51,7 +72,9 @@ class Favorites extends React.Component {
 
   render() {
     const listFavotires = this.getFavorite();
-    return <div>{this.onRenderFavorite(listFavotires)}</div>;
+    return (
+      <div>{this.onRenderFavorite(listFavotires, this.onFavoriteClick)}</div>
+    );
   }
 }
 

@@ -1,4 +1,5 @@
 import omdbapi from "../api/omdbapi";
+import history from "../history";
 import { FETCH_MOVIE, FETCH_DETAIL } from "./types";
 
 export const fetchMovies = titleMovie => async dispatch => {
@@ -10,8 +11,9 @@ export const fetchMovies = titleMovie => async dispatch => {
   });
   if (response.data.Search) {
     dispatch({ type: FETCH_MOVIE, payload: response.data.Search });
+    history.push("/");
   } else {
-    alert("No se encontraron películas!");
+    alert(`No se encontraron películas con el título: ${titleMovie}`);
   }
 };
 

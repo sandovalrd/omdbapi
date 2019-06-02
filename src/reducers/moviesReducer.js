@@ -5,7 +5,7 @@ const INICIAL_STATE = {
   selectMovie: null
 };
 
-export default (state = INICIAL_STATE, action) => {
+export default (state = INICIAL_STATE, action, title) => {
   switch (action.type) {
     case FETCH_MOVIE:
       return {

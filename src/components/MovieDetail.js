@@ -4,17 +4,69 @@ import { connect } from "react-redux";
 import { fetchMovieDetail } from "../actions";
 
 class MovieDetail extends React.Component {
-  state = { claseActive: "favorite icon" };
+  state = { list: [] };
+
   componentDidMount() {
-    this.props.fetchMovieDetail("tt0372784");
+    this.loadLocalStorage();
   }
-  onFavoriteClick = () => {
-    if (this.state.claseActive === "favorite icon active") {
-      return this.setState({ claseActive: "favorite icon" });
+
+  loadLocalStorage = () => {
+    // Se cargan todas las llaves que existan en localStorage
+    for (let key in this.state) {
+      if (localStorage.hasOwnProperty(key)) {
+        let value = localStorage.getItem(key);
+        try {
+          value = JSON.parse(value);
+          this.setState({ [key]: value });
+        } catch (e) {
+          this.setState({ [key]: value });
+        }
+      }
     }
-    return this.setState({ claseActive: "favorite icon active" });
   };
+
+  onAddNewFavorite = () => {
+    const newItem = {
+      id: this.props.movie.imdbID,
+      title: this.props.movie.Title,
+      poster: this.props.movie.Poster,
+      year: this.props.movie.Year
+    };
+    const list = [...this.state.list];
+    list.push(newItem);
+    this.setState({ list });
+    localStorage.setItem("list", JSON.stringify(list));
+  };
+
+  onDeleteFavorite = id => {
+    const list = [...this.state.list];
+    const updatedList = list.filter(item => item.id !== id);
+    this.setState({ list: updatedList });
+    localStorage.setItem("list", JSON.stringify(updatedList));
+  };
+
+  onFavoriteClick = () => {
+    const favoriteActive = this.getFavorite();
+    if (favoriteActive) {
+      this.onDeleteFavorite(this.props.movie.imdbID);
+    } else {
+      this.onAddNewFavorite();
+    }
+  };
+
+  getFavorite = () => {
+    const list = JSON.parse(localStorage.getItem("list"));
+    const { imdbID } = this.props.movie;
+    const favorite = list.some(item => item.id === imdbID);
+    if (favorite) {
+      return "active";
+    } else {
+      return "";
+    }
+  };
+
   render() {
+    const favoriteActive = this.getFavorite();
     return (
       <div className="ui grid">
         <div className="ui row">
@@ -28,36 +80,36 @@ class MovieDetail extends React.Component {
           <div className="ten wide column">
             <div className="content items">
               <div className="extra">
-                <b>Título: </b> {this.props.movie.Title}
+                <b>Title: </b> {this.props.movie.Title}
               </div>
               <div className="extra">
-                <b>Año:</b> {this.props.movie.Year}
+                <b>Year:</b> {this.props.movie.Year}
               </div>
               <div className="extra">
                 <b>Director:</b> {this.props.movie.Director}
               </div>
               <div className="extra">
-                <b>Producción:</b> {this.props.movie.Production}
+                <b>Production:</b> {this.props.movie.Production}
               </div>
               <div className="extra">
-                <b>Genero:</b> {this.props.movie.Genre}
+                <b>Genre:</b> {this.props.movie.Genre}
               </div>
               <div className="extra">
-                <b>Lenguajes:</b> {this.props.movie.Language}
+                <b>Language:</b> {this.props.movie.Language}
               </div>
               <div className="extra">
-                <b>Taquilla:</b> {this.props.movie.BoxOffice}
+                <b>BoxOffice:</b> {this.props.movie.BoxOffice}
               </div>
               <div className="extra">
-                <b>Trama:</b> {this.props.movie.Plot}
+                <b>Plot:</b> {this.props.movie.Plot}
               </div>
               <div className="extra">
-                <b>Duración:</b> {this.props.movie.Runtime}
+                <b>Runtime:</b> {this.props.movie.Runtime}
               </div>
               <div className="extra">
-                <b>Add to favorites: </b>
+                <b>Favorite: </b>
                 <i
-                  className={this.state.claseActive}
+                  className={`favorite icon ${favoriteActive}`}
                   onClick={this.onFavoriteClick}
                 />
               </div>

@@ -6,7 +6,9 @@ import { fetchMovies, fetchMovieDetail } from "../actions";
 class Movies extends React.Component {
   state = { selectMovie: null };
   componentDidMount() {
-    this.props.fetchMovies("Batman"); // Titulo por default
+    if (!this.props.movies[0]) {
+      this.props.fetchMovies("Batman"); // Titulo por default
+    }
   }
   componentDidUpdate() {
     this.props.fetchMovieDetail(this.props.movies[0].imdbID);

@@ -39,7 +39,10 @@ class Favorites extends React.Component {
 
   getFavorite = () => {
     const list = JSON.parse(localStorage.getItem("list"));
-    return list;
+    if (list) {
+      return list;
+    }
+    return [];
   };
 
   onRenderFavorite = (list, onFavoriteClick) => {

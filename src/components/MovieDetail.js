@@ -55,14 +55,16 @@ class MovieDetail extends React.Component {
   };
 
   getFavorite = () => {
+    // window.localStorage.clear();
     const list = JSON.parse(localStorage.getItem("list"));
     const { imdbID } = this.props.movie;
-    const favorite = list.some(item => item.id === imdbID);
-    if (favorite) {
-      return "active";
-    } else {
-      return "";
+    if (list) {
+      const favorite = list.some(item => item.id === imdbID);
+      if (favorite) {
+        return "active";
+      }
     }
+    return "";
   };
 
   render() {

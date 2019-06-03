@@ -1,3 +1,14 @@
+###
+
+Copiar la variables de ambiente:
+
+.env.development.local
+.env.production.local
+
+y configurar la variable
+
+REACT_APP_OMDBAPI_KEY=<key_de_omdbapi>
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
